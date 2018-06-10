@@ -24,7 +24,7 @@ module.exports = NodeHelper.create({
       // Check if hdmi output is already on
       exec("/opt/vc/bin/tvservice -s").stdout.on('data', function(data) {
         if (data.indexOf("0x120002") !== -1)
-          exec("/opt/vc/bin/tvservice --preferred && chvt 6 && chvt 7", null);
+          exec("echo 0 | sudo tee /sys/class/backlight/rpi_backlight/bl_power", null);
       });
     }
   },
@@ -34,7 +34,7 @@ module.exports = NodeHelper.create({
       this.relay.writeSync(this.config.relayOffState);
     }
     else if (this.config.relayPIN == false){
-      exec("/opt/vc/bin/tvservice -o", null);
+      exec("echo 1 | sudo tee /sys/class/backlight/rpi_backlight/bl_power", null);
     }
   },
 
